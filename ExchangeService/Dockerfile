@@ -13,7 +13,7 @@ COPY src/ ./src
 RUN ./mvnw package -DskipTests
 
 # --- ESTÁGIO 2: Imagem Final (Runtime) ---
-FROM ufrn/exchange-rest:v1
+FROM ufrn/exchange-rest:v2
 
 WORKDIR /app
 
