@@ -18,6 +18,7 @@
     <modules>
         <module>TravelService</module>
         <module>ExchangeService</module>
+        <module>AirlinesHub</module>
     </modules>
 
     <dependencyManagement>
