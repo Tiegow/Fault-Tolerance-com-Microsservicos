@@ -18,8 +18,8 @@ public class ExchangeClient {
         this.exchangeServiceUrl = exchangeServiceUrl;
     }
 
-    public Double getExchange(String from, String to) {
-        String url = exchangeServiceUrl + "/exchange/convert";
+    public Double converter() {
+        String url = exchangeServiceUrl + "/convert";
 
         try {
             Double taxa = restTemplate.getForObject(url, Double.class);
