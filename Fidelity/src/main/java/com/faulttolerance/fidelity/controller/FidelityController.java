@@ -1,6 +1,6 @@
 package com.faulttolerance.fidelity.controller;
 
-import com.faulttolerance.fidelity.model.dto.FidelityBonusDTO;
+import com.faulttolerance.fidelity.model.FidelityBonus;
 import com.faulttolerance.fidelity.service.FidelityService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,8 +16,8 @@ public class FidelityController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> insertBonus(@ModelAttribute FidelityBonusDTO bonusDTO) {
-        service.createBonus(bonusDTO);
+    public ResponseEntity<Void> insertBonus(@ModelAttribute FidelityBonus bonus) {
+        service.createBonus(bonus);
 
         return ResponseEntity.ok().build();
     }

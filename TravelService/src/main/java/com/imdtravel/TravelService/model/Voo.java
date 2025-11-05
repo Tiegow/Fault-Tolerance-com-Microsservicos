@@ -1,16 +1,15 @@
-package com.imdtravel.TravelService.dto;
+package com.imdtravel.TravelService.model;
 
 import java.time.LocalDate;
 
-public class VooDTO {
-    
+public class Voo {
     private String flight;
     private LocalDate day;
     private Double value;
 
-    public VooDTO() {}
+    public Voo() {}
 
-    public VooDTO(String flight, LocalDate day, Double value) {
+    public Voo(String flight, LocalDate day, Double value) {
         this.flight = flight;
         this.day = day;
         this.value = value;
@@ -33,5 +32,5 @@ public class VooDTO {
     }
     public void setValue(Double value) {
         this.value = value;
-    }    
+    }
 }
