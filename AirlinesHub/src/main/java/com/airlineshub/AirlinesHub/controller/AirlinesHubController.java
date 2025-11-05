@@ -6,6 +6,9 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
+import com.airlineshub.AirlinesHub.model.Transacao;
+import com.airlineshub.AirlinesHub.service.FailService;
+import com.airlineshub.AirlinesHub.service.FlightService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,67 +24,38 @@ import com.airlineshub.AirlinesHub.repository.FlightRepository;
 @RequestMapping("/airlineshub")
 public class AirlinesHubController {
 
-    @Autowired
-    private FlightRepository flightRepository;
+    private final FlightService flightService;
+    private final FailService failService;
 
-    private AtomicBoolean isSlow = new AtomicBoolean(false);
-    private AtomicLong slowStateEndTime = new AtomicLong();
+    public AirlinesHubController(FlightService flightService, FailService failService) {
+        this.flightService = flightService;
+        this.failService = failService;
+    }
 
     @GetMapping("/flight")
     public ResponseEntity<Voo> consultarVoo(@RequestParam String flight, @RequestParam LocalDate day) {
 
-        // -- FALHA (Omissão, 0.2%, 0s) -- \\
-        if (Math.random() < 0.2) {
-            return ResponseEntity.ok(null);
-        }
+        failService.createChanceFailOmission(0.2);
 
-        // -- EXECUÇÃO NORMAL -- \\
-        Voo voo = flightRepository.findVoo(flight, day);
+        Voo voo = flightService.findVoo(flight, day);
+
         return ResponseEntity.ok(voo);
     } 
 
     @PostMapping("/sell")
-    public ResponseEntity<String> venderVoo(@RequestParam String flight, @RequestParam LocalDate day) {
-        
-        long currTime = System.currentTimeMillis();
-        
-        // -- FALHA (Tempo = 5s, 0.1%, 10s) -- \\
-        if (isSlow.get()) {
-            if (currTime < slowStateEndTime.get()) {
-                try {
-                    Thread.sleep(5000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                isSlow.set(false);
-            }
-        }
+    public ResponseEntity<Transacao> venderVoo(@RequestParam String flight, @RequestParam LocalDate day) {
 
-        if (Math.random() < 0.1 && isSlow.get() == false) { // 10% de chance de entrar no estado de lentidão
-            isSlow.set(true);
-            slowStateEndTime.set(currTime + 10000);
+        failService.createChanceFailTime(5, 0.1, 10);
 
-            try {
-                Thread.sleep(5000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }            
-        }
-        
-        // -- EXECUÇÃO NORMAL -- \\
-        Voo voo = flightRepository.findVoo(flight, day);
-        if (voo != null) {
-            String idTransacao = UUID.randomUUID().toString();
+        flightService.findVoo(flight, day);
+        Transacao transacao = new Transacao(UUID.randomUUID().toString());
 
-            return ResponseEntity.ok(idTransacao);
-        }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(transacao);
     }   
 
     @GetMapping("/all")
     public ResponseEntity<List<Voo>> listarTodos() {
-        List<Voo> voos = flightRepository.findAll();
+        List<Voo> voos = flightService.findAll();
 
         return ResponseEntity.ok(voos);
     }    

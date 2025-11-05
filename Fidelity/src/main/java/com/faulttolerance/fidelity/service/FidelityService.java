@@ -1,11 +1,11 @@
 package com.faulttolerance.fidelity.service;
 
-import com.faulttolerance.fidelity.model.dto.FidelityBonusDTO;
+import com.faulttolerance.fidelity.model.FidelityBonus;
 import org.springframework.stereotype.Service;
 
 @Service
 public class FidelityService {
-    public void createBonus(FidelityBonusDTO bonusDTO) {
+    public void createBonus(FidelityBonus bonus) {
 
     }
 }

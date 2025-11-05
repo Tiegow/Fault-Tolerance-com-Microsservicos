@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.airlineshub.AirlinesHub.exception.NotFoundException;
 import org.springframework.stereotype.Repository;
 
 import com.airlineshub.AirlinesHub.model.Voo;
@@ -24,14 +25,7 @@ public class FlightRepository {
         ));
     }
 
-    public Voo findVoo(String flightCode, LocalDate day) {
-        return this.voos.stream()
-            .filter(voo -> voo.getFlight().equalsIgnoreCase(flightCode) && voo.getDay().equals(day))
-            .findFirst()
-            .orElse(null); 
-    }
-    
-    public List<Voo> findAll() {
-        return this.voos;
+    public List<Voo> getVoos() {
+        return voos;
     }
 }
