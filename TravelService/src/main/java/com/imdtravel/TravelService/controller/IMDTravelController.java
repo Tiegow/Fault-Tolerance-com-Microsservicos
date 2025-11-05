@@ -28,7 +28,7 @@ public class IMDTravelController {
     @Autowired
     private FidelityClient fidelityClient;
     
-    @PostMapping("buyTicket")
+    @PostMapping("/buyTicket")
     public ResponseEntity<String> comprarTicket(@RequestParam String flight, @RequestParam LocalDate day, @RequestParam String user) {
 
         //Req. 1:
