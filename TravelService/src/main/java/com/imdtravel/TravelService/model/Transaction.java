@@ -1,6 +1,6 @@
 package com.imdtravel.TravelService.model;
 
-public record Transacao(
+public record Transaction(
         String idTransacao
 ) {
 }

@@ -2,9 +2,10 @@ package com.imdtravel.TravelService.service;
 
 import java.time.LocalDate;
 
+import com.imdtravel.TravelService.exception.ExternalServiceException;
 import com.imdtravel.TravelService.exception.NotFoundException;
-import com.imdtravel.TravelService.model.Transacao;
-import com.imdtravel.TravelService.model.Voo;
+import com.imdtravel.TravelService.model.Transaction;
+import com.imdtravel.TravelService.model.Travel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -23,33 +24,37 @@ public class AirlinesHubClient {
         this.hubServiceUrl = hubApiBaseUrl;
     }
 
-    public Voo consultarVoo(String flight, LocalDate day) {
+    public Travel checkTravel(String flight, LocalDate day) {
         String url = UriComponentsBuilder.fromUriString(hubServiceUrl + "/flight")
                 .queryParam("flight", flight)
-                .queryParam("day", day.toString()) 
+                .queryParam("day", day.toString())
                 .toUriString();
 
         try {
-            Voo voo = restTemplate.getForObject(url, Voo.class);
+            Travel travel = restTemplate.getForObject(url, Travel.class);
 
-            return voo;
+            return travel;
         } catch (Exception e) {
-            throw new NotFoundException(e.getMessage());
+            throw new NotFoundException("Recurso não encontrado no serviço de linhas aéreas!");
         }
     }
 
-    public Transacao venderVoo(String flight, LocalDate day) {
+    public Transaction sellTravel(String flight, LocalDate day) {
         String url = UriComponentsBuilder.fromUriString(hubServiceUrl + "/sell")
                 .queryParam("flight", flight)
                 .queryParam("day", day.toString()) 
                 .toUriString();
 
         try {
-            Transacao transacao = restTemplate.postForObject(url, null, Transacao.class);
-            
-            return transacao;
+            Transaction transaction = restTemplate.postForObject(url, null, Transaction.class);
+
+            return transaction;
         } catch (Exception e) {
-            throw new NotFoundException(e.getMessage());
+            if(e instanceof NotFoundException) {
+                throw new NotFoundException(e.getMessage());
+            } else {
+                throw new ExternalServiceException("Ocorreu um erro interno ao tentar realizar a venda no serviço de linhas aéreas!");
+            }
         }
     }
 }

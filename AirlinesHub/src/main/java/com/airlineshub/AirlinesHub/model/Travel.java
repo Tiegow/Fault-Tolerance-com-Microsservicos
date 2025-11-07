@@ -2,14 +2,14 @@ package com.airlineshub.AirlinesHub.model;
 
 import java.time.LocalDate;
 
-public class Voo {
+public class Travel {
     private String flight;
     private LocalDate day;
     private Double value;
 
-    public Voo() {}
+    public Travel() {}
 
-    public Voo(String flight, LocalDate day, Double value) {
+    public Travel(String flight, LocalDate day, Double value) {
         this.flight = flight;
         this.day = day;
         this.value = value;

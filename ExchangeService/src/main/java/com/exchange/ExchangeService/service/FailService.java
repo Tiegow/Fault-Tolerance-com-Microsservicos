@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class FailService {
 
-    private AtomicBoolean errorState = new AtomicBoolean(false);
-    private AtomicLong errorStateEndTime = new AtomicLong(0);
+    private final AtomicBoolean errorState = new AtomicBoolean(false);
+    private final AtomicLong errorStateEndTime = new AtomicLong(0);
 
     public void createChanceFailError(Double chance, Integer secondsFailDuration) {
         long currTime = System.currentTimeMillis();

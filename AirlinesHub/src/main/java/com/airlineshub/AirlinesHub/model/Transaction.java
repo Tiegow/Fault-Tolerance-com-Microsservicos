@@ -1,6 +1,6 @@
 package com.airlineshub.AirlinesHub.model;
 
-public record Transacao(
+public record Transaction(
         String idTransacao
 ) {
 }

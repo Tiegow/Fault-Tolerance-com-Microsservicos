@@ -1,8 +1,8 @@
 package com.imdtravel.TravelService.service;
 
 import com.imdtravel.TravelService.model.FidelityBonus;
-import com.imdtravel.TravelService.model.Transacao;
-import com.imdtravel.TravelService.model.Voo;
+import com.imdtravel.TravelService.model.Transaction;
+import com.imdtravel.TravelService.model.Travel;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -20,12 +20,12 @@ public class IMDTravelService {
         this.fidelityClient = fidelityClient;
     }
 
-    public Transacao buyTicket(String flight, LocalDate day, String user) {
-        Voo voo = airlinesHubClient.consultarVoo(flight, day);
+    public Transaction buyTicket(String flight, LocalDate day, String user) {
+        Travel voo = airlinesHubClient.checkTravel(flight, day);
 
-        exchangeClient.converter();
+        Double exchangeRate = exchangeClient.getExchangeRate();
 
-        Transacao compra = airlinesHubClient.venderVoo(voo.getFlight(), voo.getDay());
+        Transaction compra = airlinesHubClient.sellTravel(voo.getFlight(), voo.getDay());
 
         int bonus = (int) Math.round(voo.getValue());
         fidelityClient.createBonus(new FidelityBonus(user, bonus));

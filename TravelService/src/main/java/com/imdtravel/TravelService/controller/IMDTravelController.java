@@ -2,7 +2,7 @@ package com.imdtravel.TravelService.controller;
 
 import java.time.LocalDate;
 
-import com.imdtravel.TravelService.model.Transacao;
+import com.imdtravel.TravelService.model.Transaction;
 import com.imdtravel.TravelService.service.IMDTravelService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,10 +21,10 @@ public class IMDTravelController {
     }
 
     @PostMapping("/buyTicket")
-    public ResponseEntity<Transacao> comprarTicket(@RequestParam String flight, @RequestParam LocalDate day, @RequestParam String user) {
+    public ResponseEntity<Transaction> buyTicket(@RequestParam String flight, @RequestParam LocalDate day, @RequestParam String user) {
 
-        Transacao compra = imdtravelService.buyTicket(flight, day, user);
+        Transaction transaction = imdtravelService.buyTicket(flight, day, user);
  
-        return ResponseEntity.ok(compra);
+        return ResponseEntity.ok(transaction);
     }
 }

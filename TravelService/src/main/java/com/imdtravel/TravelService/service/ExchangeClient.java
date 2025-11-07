@@ -1,5 +1,7 @@
 package com.imdtravel.TravelService.service;
 
+import com.imdtravel.TravelService.exception.ExternalServiceException;
+import com.imdtravel.TravelService.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -18,15 +20,15 @@ public class ExchangeClient {
         this.exchangeServiceUrl = exchangeServiceUrl;
     }
 
-    public Double converter() {
+    public Double getExchangeRate() {
         String url = exchangeServiceUrl + "/convert";
 
         try {
             Double taxa = restTemplate.getForObject(url, Double.class);
+
             return taxa;
         } catch (Exception e) {
-            System.err.println("Erro ao chamar ExchangeService: " + e.getMessage());
-            return null;
+            throw new ExternalServiceException("Ocorreu um erro interno no serviço que fornece a taxa de conversão!");
         }
     }    
 }

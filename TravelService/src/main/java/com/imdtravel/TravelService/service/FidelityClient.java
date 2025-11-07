@@ -1,5 +1,6 @@
 package com.imdtravel.TravelService.service;
 
+import com.imdtravel.TravelService.exception.ExternalServiceException;
 import com.imdtravel.TravelService.model.FidelityBonus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -40,9 +41,8 @@ public class FidelityClient {
 
         try {
             restTemplate.postForEntity(url, requestEntity, Void.class);
-
-        } catch (RestClientException e) {
-            System.err.println("Erro ao chamar serviço de fidelidade: " + e.getMessage());
+        } catch (Exception e) {
+            throw new ExternalServiceException("Ocorreu um erro interno no serviço de fidelidade!");
         }
     }
 }
