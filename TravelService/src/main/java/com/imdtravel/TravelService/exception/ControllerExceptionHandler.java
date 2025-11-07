@@ -12,7 +12,7 @@ import java.time.Instant;
 public class ControllerExceptionHandler {
 
     @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<StandardError> handleException(Exception exception, HttpServletRequest request) {
+    public ResponseEntity<StandardError> handleNotFoundException(Exception exception, HttpServletRequest request) {
 
         StandardError err = new StandardError(
                 Instant.now(),
@@ -22,5 +22,18 @@ public class ControllerExceptionHandler {
         );
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
+    }
+
+    @ExceptionHandler(ExternalServiceException.class)
+    public ResponseEntity<StandardError> handleExternalServiceException(Exception exception, HttpServletRequest request) {
+
+        StandardError err = new StandardError(
+                Instant.now(),
+                HttpStatus.BAD_GATEWAY.value(),
+                exception.getMessage(),
+                request.getServletPath()
+        );
+
+        return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(err);
     }
 }

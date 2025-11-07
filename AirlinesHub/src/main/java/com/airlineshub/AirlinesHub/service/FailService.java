@@ -7,8 +7,8 @@ import java.util.concurrent.atomic.AtomicLong;
 
 @Service
 public class FailService {
-    private AtomicBoolean isSlow = new AtomicBoolean(false);
-    private AtomicLong slowStateEndTime = new AtomicLong();
+    private final AtomicBoolean isSlow = new AtomicBoolean(false);
+    private final AtomicLong slowStateEndTime = new AtomicLong();
 
     public void createChanceFailOmission(Double chance) {
         if (Math.random() < chance) {

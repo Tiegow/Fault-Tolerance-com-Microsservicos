@@ -1,8 +1,8 @@
 package com.airlineshub.AirlinesHub.service;
 
 import com.airlineshub.AirlinesHub.exception.NotFoundException;
-import com.airlineshub.AirlinesHub.model.Voo;
-import com.airlineshub.AirlinesHub.repository.FlightRepository;
+import com.airlineshub.AirlinesHub.model.Travel;
+import com.airlineshub.AirlinesHub.repository.TravelRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -11,20 +11,20 @@ import java.util.List;
 @Service
 public class FlightService {
 
-    private final FlightRepository flightRepository;
+    private final TravelRepository travelRepository;
 
-    public FlightService(FlightRepository flightRepository) {
-        this.flightRepository = flightRepository;
+    public FlightService(TravelRepository travelRepository) {
+        this.travelRepository = travelRepository;
     }
 
-    public Voo findVoo(String flightCode, LocalDate day) {
-        return this.flightRepository.getVoos().stream()
-                .filter(voo -> voo.getFlight().equalsIgnoreCase(flightCode) && voo.getDay().equals(day))
+    public Travel findVoo(String flightCode, LocalDate day) {
+        return this.travelRepository.getTravels().stream()
+                .filter(travel -> travel.getFlight().equalsIgnoreCase(flightCode) && travel.getDay().equals(day))
                 .findFirst()
                 .orElseThrow(() -> new NotFoundException("Recurso não encontrado"));
     }
 
-    public List<Voo> findAll() {
-        return this.flightRepository.getVoos();
+    public List<Travel> findAll() {
+        return this.travelRepository.getTravels();
     }
 }

@@ -3,13 +3,10 @@ package com.airlineshub.AirlinesHub.controller;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicLong;
 
-import com.airlineshub.AirlinesHub.model.Transacao;
+import com.airlineshub.AirlinesHub.model.Transaction;
 import com.airlineshub.AirlinesHub.service.FailService;
 import com.airlineshub.AirlinesHub.service.FlightService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,8 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.airlineshub.AirlinesHub.model.Voo;
-import com.airlineshub.AirlinesHub.repository.FlightRepository;
+import com.airlineshub.AirlinesHub.model.Travel;
 
 @RestController
 @RequestMapping("/airlineshub")
@@ -33,30 +29,30 @@ public class AirlinesHubController {
     }
 
     @GetMapping("/flight")
-    public ResponseEntity<Voo> consultarVoo(@RequestParam String flight, @RequestParam LocalDate day) {
+    public ResponseEntity<Travel> checkTravel(@RequestParam String flight, @RequestParam LocalDate day) {
 
         failService.createChanceFailOmission(0.2);
 
-        Voo voo = flightService.findVoo(flight, day);
+        Travel travel = flightService.findVoo(flight, day);
 
-        return ResponseEntity.ok(voo);
+        return ResponseEntity.ok(travel);
     } 
 
     @PostMapping("/sell")
-    public ResponseEntity<Transacao> venderVoo(@RequestParam String flight, @RequestParam LocalDate day) {
+    public ResponseEntity<Transaction> sellTravel(@RequestParam String flight, @RequestParam LocalDate day) {
 
         failService.createChanceFailTime(5, 0.1, 10);
 
         flightService.findVoo(flight, day);
-        Transacao transacao = new Transacao(UUID.randomUUID().toString());
+        Transaction transaction = new Transaction(UUID.randomUUID().toString());
 
-        return ResponseEntity.ok(transacao);
+        return ResponseEntity.ok(transaction);
     }   
 
     @GetMapping("/all")
-    public ResponseEntity<List<Voo>> listarTodos() {
-        List<Voo> voos = flightService.findAll();
+    public ResponseEntity<List<Travel>> getAllTravels() {
+        List<Travel> travels = flightService.findAll();
 
-        return ResponseEntity.ok(voos);
+        return ResponseEntity.ok(travels);
     }    
 }
