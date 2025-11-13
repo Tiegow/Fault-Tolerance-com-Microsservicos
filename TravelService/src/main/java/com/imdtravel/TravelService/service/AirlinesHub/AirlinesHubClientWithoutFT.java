@@ -1,9 +1,10 @@
-package com.imdtravel.TravelService.service;
+package com.imdtravel.TravelService.service.AirlinesHub;
 
 import java.time.LocalDate;
 
 import com.imdtravel.TravelService.exception.ExternalServiceException;
 import com.imdtravel.TravelService.exception.NotFoundException;
+import com.imdtravel.TravelService.model.AirlinesHubClient;
 import com.imdtravel.TravelService.model.Transaction;
 import com.imdtravel.TravelService.model.Travel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,13 +14,13 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @Service
-public class AirlinesHubClient {
+public class AirlinesHubClientWithoutFT implements AirlinesHubClient {
 
     private final RestTemplate restTemplate;
     private final String hubServiceUrl; 
 
     @Autowired
-    public AirlinesHubClient(RestTemplate restTemplate, @Value("${app.services.hub.url}") String hubApiBaseUrl) {
+    public AirlinesHubClientWithoutFT(RestTemplate restTemplate, @Value("${app.services.hub.url}") String hubApiBaseUrl) {
         this.restTemplate = restTemplate;
         this.hubServiceUrl = hubApiBaseUrl;
     }

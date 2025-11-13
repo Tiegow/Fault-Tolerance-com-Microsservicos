@@ -1,21 +1,21 @@
-package com.imdtravel.TravelService.service;
+package com.imdtravel.TravelService.service.Exchange;
 
 import com.imdtravel.TravelService.exception.ExternalServiceException;
-import com.imdtravel.TravelService.exception.NotFoundException;
+import com.imdtravel.TravelService.model.ExchangeClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 @Service
-public class ExchangeClient {
+public class ExchangeClientWithoutFT implements ExchangeClient {
 
     private final RestTemplate restTemplate;
     
     private final String exchangeServiceUrl;
 
     @Autowired
-    public ExchangeClient(RestTemplate restTemplate, @Value("${app.services.exchange.url}") String exchangeServiceUrl) {
+    public ExchangeClientWithoutFT(RestTemplate restTemplate, @Value("${app.services.exchange.url}") String exchangeServiceUrl) {
         this.restTemplate = restTemplate;
         this.exchangeServiceUrl = exchangeServiceUrl;
     }

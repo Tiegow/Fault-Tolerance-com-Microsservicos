@@ -1,7 +1,8 @@
-package com.imdtravel.TravelService.service;
+package com.imdtravel.TravelService.service.Fidelity;
 
 import com.imdtravel.TravelService.exception.ExternalServiceException;
 import com.imdtravel.TravelService.model.FidelityBonus;
+import com.imdtravel.TravelService.model.FidelityClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -10,18 +11,17 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 @Service
-public class FidelityClient {
+public class FidelityClientWithoutFT implements FidelityClient {
 
     private final RestTemplate restTemplate;
     
     private final String fidelityServiceUrl; 
 
     @Autowired
-    public FidelityClient(RestTemplate restTemplate, @Value("${app.services.fidelity.url}") String fidelityApiUrl) {
+    public FidelityClientWithoutFT(RestTemplate restTemplate, @Value("${app.services.fidelity.url}") String fidelityApiUrl) {
         this.restTemplate = restTemplate;
         this.fidelityServiceUrl = fidelityApiUrl;
     }

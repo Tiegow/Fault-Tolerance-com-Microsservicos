@@ -21,9 +21,10 @@ public class IMDTravelController {
     }
 
     @PostMapping("/buyTicket")
-    public ResponseEntity<Transaction> buyTicket(@RequestParam String flight, @RequestParam LocalDate day, @RequestParam String user) {
+    public ResponseEntity<Transaction> buyTicket(@RequestParam String flight, @RequestParam LocalDate day,
+                                                 @RequestParam String user, @RequestParam Boolean ft) {
 
-        Transaction transaction = imdtravelService.buyTicket(flight, day, user);
+        Transaction transaction = imdtravelService.buyTicket(flight, day, user, ft);
  
         return ResponseEntity.ok(transaction);
     }
