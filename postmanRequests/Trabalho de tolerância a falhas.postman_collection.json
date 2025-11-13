@@ -185,7 +185,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "localhost:8084/imdtravel/buyTicket?flight=TP-008&day=2025-11-10&user=123",
+							"raw": "localhost:8084/imdtravel/buyTicket?flight=TP-008&day=2025-11-10&user=123&ft=false",
 							"host": [
 								"localhost"
 							],
@@ -206,6 +206,10 @@
 								{
 									"key": "user",
 									"value": "123"
+								},
+								{
+									"key": "ft",
+									"value": "false"
 								}
 							]
 						}
