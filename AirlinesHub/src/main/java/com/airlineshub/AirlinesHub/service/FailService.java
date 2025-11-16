@@ -12,7 +12,12 @@ public class FailService {
 
     public void createChanceFailOmission(Double chance) {
         if (Math.random() < chance) {
-            while (true) {}
+            try {
+                Thread.sleep(30000);
+
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
         }
     }
 
