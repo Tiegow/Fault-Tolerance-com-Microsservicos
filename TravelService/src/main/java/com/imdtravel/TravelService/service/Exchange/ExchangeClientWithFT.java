@@ -5,9 +5,10 @@ import com.imdtravel.TravelService.model.ExchangeClient;
 
 import java.util.LinkedList;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
 @Service
@@ -17,12 +18,10 @@ public class ExchangeClientWithFT implements ExchangeClient {
     
     private final String exchangeServiceUrl;
 
-    // FT:
-    private LinkedList<Double> ultimasDezTaxas = new LinkedList<>();
+    private final LinkedList<Double> ultimasDezTaxas = new LinkedList<>();
     private static final int CACHE_MAXIMO = 10;
 
-    @Autowired
-    public ExchangeClientWithFT(RestTemplate restTemplate, @Value("${app.services.exchange.url}") String exchangeServiceUrl) {
+    public ExchangeClientWithFT(@Qualifier("restTemplateWithFT") RestTemplate restTemplate, @Value("${app.services.exchange.url}") String exchangeServiceUrl) {
         this.restTemplate = restTemplate;
         this.exchangeServiceUrl = exchangeServiceUrl;
     }
@@ -40,7 +39,7 @@ public class ExchangeClientWithFT implements ExchangeClient {
             ultimasDezTaxas.addLast(taxa);
 
             return taxa;
-        } catch (Exception e) {
+        } catch (HttpStatusCodeException e) {
             if (!ultimasDezTaxas.isEmpty()) {
                 double soma = 0.0;
                 for (Double taxaCache : ultimasDezTaxas) {
@@ -49,7 +48,7 @@ public class ExchangeClientWithFT implements ExchangeClient {
                 return soma / ultimasDezTaxas.size();
             }
 
-            throw new ExternalServiceException("Ocorreu um erro interno no serviço que fornece a taxa de conversão!");
+            throw new ExternalServiceException("Houve um problema no serviço que fornece a taxa de conversão. Tente novamente mais tarde.");
         }
     } 
 }

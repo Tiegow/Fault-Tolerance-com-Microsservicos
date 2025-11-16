@@ -11,7 +11,12 @@ import org.springframework.web.client.RestTemplate;
 public class AppConfig {
 
     @Bean
-    public RestTemplate restTemplate(RestTemplateBuilder builder) {
+    public RestTemplate restTemplateWithFT(RestTemplateBuilder builder) {
         return builder.connectTimeout(Duration.ofSeconds(2)).readTimeout(Duration.ofSeconds(2)).build();
+    }
+
+    @Bean
+    public RestTemplate restTemplateWithoutFT(RestTemplateBuilder builder) {
+        return builder.build();
     }
 }
