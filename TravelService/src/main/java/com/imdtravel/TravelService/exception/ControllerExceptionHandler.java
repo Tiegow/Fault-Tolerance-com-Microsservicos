@@ -36,4 +36,17 @@ public class ControllerExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(err);
     }
+
+    @ExceptionHandler(UnavaliableServiceException.class)
+    public ResponseEntity<StandardError> handleUnavaliableServiceException(Exception exception, HttpServletRequest request) {
+        
+        StandardError err = new StandardError(
+                Instant.now(),
+                HttpStatus.SERVICE_UNAVAILABLE.value(),
+                exception.getMessage(),
+                request.getServletPath()
+        );
+
+        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(err);
+    }
 }

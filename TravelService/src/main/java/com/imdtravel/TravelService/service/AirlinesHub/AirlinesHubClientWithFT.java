@@ -2,6 +2,7 @@ package com.imdtravel.TravelService.service.AirlinesHub;
 
 import com.imdtravel.TravelService.exception.ExternalServiceException;
 import com.imdtravel.TravelService.exception.NotFoundException;
+import com.imdtravel.TravelService.exception.UnavaliableServiceException;
 import com.imdtravel.TravelService.model.AirlinesHubClient;
 import com.imdtravel.TravelService.model.Transaction;
 import com.imdtravel.TravelService.model.Travel;
@@ -56,7 +57,7 @@ public class AirlinesHubClientWithFT implements AirlinesHubClient {
             throw (NotFoundException) ex;
         }
 
-        throw new ExternalServiceException("Serviço de checagem de linhas aéreas indisponível no momento. Tente novamente mais tarde.");
+        throw new UnavaliableServiceException("Serviço de checagem de linhas aéreas indisponível no momento. Tente novamente mais tarde.");
     }
 
     @Override
@@ -85,6 +86,6 @@ public class AirlinesHubClientWithFT implements AirlinesHubClient {
             throw (NotFoundException) ex;
         }
 
-        throw new ExternalServiceException("Serviço de venda de linhas aéreas indisponível no momento. Tente mais tarde.");
+        throw new UnavaliableServiceException("Serviço de venda de linhas aéreas indisponível no momento. Tente mais tarde.");
     }
 }

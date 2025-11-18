@@ -45,7 +45,7 @@ public class FidelityClientWithFT implements FidelityClient {
 
         try {
             restTemplate.postForEntity(url, requestEntity, Void.class);
-        } catch (HttpStatusCodeException e) {
+        } catch (Exception e) {
             throw new ExternalServiceException("Houve um problema no serviço de fidelidade. Tente novamente mais tarde.");
         }
     }

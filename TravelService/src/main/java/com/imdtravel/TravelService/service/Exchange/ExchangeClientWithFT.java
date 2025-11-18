@@ -8,7 +8,6 @@ import java.util.LinkedList;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
 @Service
@@ -39,7 +38,7 @@ public class ExchangeClientWithFT implements ExchangeClient {
             ultimasDezTaxas.addLast(taxa);
 
             return taxa;
-        } catch (HttpStatusCodeException e) {
+        } catch (Exception e) {
             if (!ultimasDezTaxas.isEmpty()) {
                 double soma = 0.0;
                 for (Double taxaCache : ultimasDezTaxas) {
