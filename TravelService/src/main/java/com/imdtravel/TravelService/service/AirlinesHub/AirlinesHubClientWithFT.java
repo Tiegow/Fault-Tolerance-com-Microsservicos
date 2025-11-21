@@ -52,7 +52,7 @@ public class AirlinesHubClientWithFT implements AirlinesHubClient {
         }
     }
 
-    private Travel checkTravelFallback(String flight, LocalDate day, Throwable ex) {
+    public Travel checkTravelFallback(String flight, LocalDate day, Throwable ex) {
         if (ex instanceof NotFoundException) {
             throw (NotFoundException) ex;
         }
@@ -81,7 +81,7 @@ public class AirlinesHubClientWithFT implements AirlinesHubClient {
         }
     }
 
-    private Transaction sellTravelFallback(String flight, LocalDate day, Throwable ex) {
+    public Transaction sellTravelFallback(String flight, LocalDate day, Throwable ex) {
         if (ex instanceof NotFoundException) {
             throw (NotFoundException) ex;
         }

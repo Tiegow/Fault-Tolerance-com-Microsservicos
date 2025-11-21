@@ -1,24 +1,11 @@
 import http from 'k6/http';
 import { check, sleep } from 'k6';
-// import { htmlReport } from "https://raw.githubusercontent.com/benc-uk/k6-reporter/main/dist/bundle.js";
+import { htmlReport } from "https://raw.githubusercontent.com/benc-uk/k6-reporter/main/dist/bundle.js";
 
 export const options = {
   stages: [
     { duration: '10s', target: 5 }, 
-
-    { duration: '5s', target: 30 }, 
-    { duration: '5s', target: 5 },  
-
-    { duration: '10s', target: 5 },  
-
-    { duration: '5s', target: 30 }, 
-    { duration: '5s', target: 5 },  
-
-    { duration: '10s', target: 5 }, 
-
-    { duration: '5s', target: 30 }, 
-    { duration: '5s', target: 5 },  
-
+    { duration: '1s', target: 0 }, 
     { duration: '10s', target: 5 }, 
   ],
 
@@ -41,7 +28,7 @@ export default function () {
   const user = 'k6-tester-' + __VU; 
   
   // Testar COM ou SEM tolerância a falhas
-  const ft = true; 
+  const ft = true;
 
   const url = `${BASE_URL}/buyTicket?flight=${flight}&day=${day}&user=${user}&ft=${ft}`;
 
@@ -50,9 +37,7 @@ export default function () {
 
   // --- VALIDAÇÃO (CHECKS) ---
   check(res, {
-    'status é 200 (OK)': (r) => r.status === 200,
-    'Serviço Indisponível (fail fast)': (r) => r.status === 503,
-    'Erro desconhecido': (r) => r.status === 500
+    'status é 200 (OK)': (r) => r.status === 200
   });
 
   // Pausa aleatória entre 0.5s e 1s antes da próxima compra

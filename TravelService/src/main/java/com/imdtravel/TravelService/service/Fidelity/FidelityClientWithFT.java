@@ -50,7 +50,7 @@ public class FidelityClientWithFT implements FidelityClient {
         }
     }
 
-    private void  createBonusFallback(FidelityBonus bonus, Throwable ex) {
+    public void  createBonusFallback(FidelityBonus bonus, Throwable ex) {
         bonusQueueService.add(bonus);
     }
 }

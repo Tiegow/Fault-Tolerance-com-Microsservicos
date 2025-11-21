@@ -3,7 +3,9 @@ package com.imdtravel.TravelService.service.Exchange;
 import com.imdtravel.TravelService.exception.ExternalServiceException;
 import com.imdtravel.TravelService.model.ExchangeClient;
 
+import java.util.Deque;
 import java.util.LinkedList;
+import java.util.concurrent.LinkedBlockingDeque;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,8 +19,7 @@ public class ExchangeClientWithFT implements ExchangeClient {
     
     private final String exchangeServiceUrl;
 
-    private final LinkedList<Double> ultimasDezTaxas = new LinkedList<>();
-    private static final int CACHE_MAXIMO = 10;
+    private final Deque<Double> ultimasDezTaxas = new LinkedBlockingDeque<>(10);
 
     public ExchangeClientWithFT(@Qualifier("restTemplateWithFT") RestTemplate restTemplate, @Value("${app.services.exchange.url}") String exchangeServiceUrl) {
         this.restTemplate = restTemplate;
@@ -31,20 +32,29 @@ public class ExchangeClientWithFT implements ExchangeClient {
         try {
             Double taxa = restTemplate.getForObject(url, Double.class);
 
-            if (ultimasDezTaxas.size() >= CACHE_MAXIMO) {
-                ultimasDezTaxas.removeFirst();
+            if (taxa == null) {
+                throw new ExternalServiceException("Serviço de conversão retornou valor nulo.");
             }
 
-            ultimasDezTaxas.addLast(taxa);
+            if (!ultimasDezTaxas.offerLast(taxa)) {
+                ultimasDezTaxas.pollFirst();
+                ultimasDezTaxas.offerLast(taxa);
+            }
 
             return taxa;
         } catch (Exception e) {
             if (!ultimasDezTaxas.isEmpty()) {
                 double soma = 0.0;
+                int contador = 0;
                 for (Double taxaCache : ultimasDezTaxas) {
-                    soma += taxaCache;
+                    if (taxaCache != null) {
+                        soma += taxaCache;
+                        contador++;
+                    }
                 }
-                return soma / ultimasDezTaxas.size();
+                if (contador > 0) {
+                    return soma / contador;
+                }
             }
 
             throw new ExternalServiceException("Houve um problema no serviço que fornece a taxa de conversão. Tente novamente mais tarde.");

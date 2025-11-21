@@ -14,7 +14,8 @@ public class BonusQueueProcessor {
     private final FidelityClientWithFT fidelityClientWithFT;
     private final CircuitBreakerRegistry circuitBreakerRegistry;
 
-    public BonusQueueProcessor(BonusQueueService bonusQueueService, FidelityClientWithFT fidelityClientWithFT, CircuitBreakerRegistry circuitBreakerRegistry) {
+    public BonusQueueProcessor(BonusQueueService bonusQueueService, FidelityClientWithFT fidelityClientWithFT,
+                               CircuitBreakerRegistry circuitBreakerRegistry) {
         this.bonusQueueService = bonusQueueService;
         this.fidelityClientWithFT = fidelityClientWithFT;
         this.circuitBreakerRegistry = circuitBreakerRegistry;
