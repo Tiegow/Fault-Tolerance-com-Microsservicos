@@ -1,7 +1,6 @@
 import http from 'k6/http';
 import { check, sleep } from 'k6';
 import { Counter, Trend } from 'k6/metrics';
-// import { htmlReport } from "https://raw.githubusercontent.com/benc-uk/k6-reporter/main/dist/bundle.js";
 
 const count200 = new Counter('count_200_ok');
 const count503FailFast = new Counter('count_503_fail_fast');
@@ -13,22 +12,23 @@ const durationFail = new Trend('duration_fail');
 
 export const options = {
     stages: [
-    { duration: '10s', target: 5 },
+    { duration: '0s', target: 5 },
+    { duration: '20s', target: 5 },
 
-    { duration: '5s', target: 30 },
+    { duration: '5s', target: 100 },
     { duration: '5s', target: 5 },
 
-    { duration: '10s', target: 5 },
+    { duration: '20s', target: 5 },
 
-    { duration: '5s', target: 30 },
+    { duration: '5s', target: 100 },
     { duration: '5s', target: 5 },
 
-    { duration: '10s', target: 5 },
+    { duration: '20s', target: 5 },
 
-    { duration: '5s', target: 30 },
+    { duration: '5s', target: 100 },
     { duration: '5s', target: 5 },
 
-    { duration: '10s', target: 5 },
+    { duration: '20s', target: 5 },
     ],
 
     thresholds: {
@@ -45,7 +45,7 @@ export default function () {
     const day = '2025-11-10';
     const user = 'k6-tester-' + __VU;
 
-    const ft = true;
+    const ft = false;
 
     const url = `${BASE_URL}/buyTicket?flight=${flight}&day=${day}&user=${user}&ft=${ft}`;
 
@@ -74,6 +74,7 @@ export default function () {
             'Fail Fast (503)': (r) => false,
         });
     } else {
+        durationFail.add(res.timings.duration);
         count500.add(1);
 
         check(res, {
@@ -83,9 +84,3 @@ export default function () {
 
     sleep(Math.random() * 0.5 + 0.5);
 }
-
-// export function handleSummary(data) {
-//   return {
-//     "relatorio-teste-pico-low.html": htmlReport(data),
-//   };
-// }
